@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+// 메인페이지의 아이템
 const ProductCard = ({ item }) => {
   const navigate = useNavigate();
   const showProduct = (id) => {

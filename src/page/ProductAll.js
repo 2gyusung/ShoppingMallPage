@@ -4,6 +4,7 @@ import { Row, Col, Container, Alert } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
 
 const ProductAll = () => {
+  // 메인페이지
   let [products, setProducts] = useState([]);
   const [query, setQuery] = useSearchParams();
   let [error, setError] = useState("");
