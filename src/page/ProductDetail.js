@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Container, Row, Col, Button, Dropdown, Alert } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import productAction from "../redux/actions/productAction";
 
 // 아이템 클릭 시 주문페이지
 const ProductDetail = () => {
-  const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { id } = useParams();
+  const product = useSelector((state) => state.product.selectedItem);
+  const dispatch = useDispatch();
   const getProductDetail = async () => {
-    setLoading(true);
-    let url = `https://my-json-server.typicode.com/2gyusung/ShoppingMallPage/products/${id}`;
-    let response = await fetch(url);
-    let data = await response.json();
-    setLoading(false);
-
-    setProduct(data);
+    dispatch(productAction.getProductDetail(id));
   };
+
   useEffect(() => {
     getProductDetail();
   }, []);

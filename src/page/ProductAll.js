@@ -2,30 +2,19 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "../component/ProductCard";
 import { Row, Col, Container, Alert } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
+import productAction from "../redux/actions/productAction";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProductAll = () => {
   // 메인페이지
-  let [products, setProducts] = useState([]);
+  const productList = useSelector(state=> state.product.productList)
   const [query, setQuery] = useSearchParams();
   let [error, setError] = useState("");
+  const dispatch  = useDispatch()
 
-  const getProducts = async () => {
-    try {
-      let keyword = query.get("q") || "";
-      let url = `https://my-json-server.typicode.com/2gyusung/ShoppingMallPage/products?q=${keyword}`;
-      let response = await fetch(url);
-      let data = await response.json();
-      if (data.length < 1) {
-        if (keyword !== "") {
-          setError(`${keyword}와 일치하는 상품이 없습니다`);
-        } else {
-          throw new Error("결과가 없습니다");
-        }
-      }
-      setProducts(data);
-    } catch (err) {
-      setError(err.message);
-    }
+  const getProducts =  () => {
+    let searchQuery = query.get("q") || "";
+    dispatch(productAction.getProducts(searchQuery))
   };
 
   useEffect(() => {
@@ -39,8 +28,8 @@ const ProductAll = () => {
         </Alert>
       ) : (
         <Row>
-          {products.length > 0 &&
-            products.map((item) => (
+          {productList.length > 0 &&
+            productList.map((item) => (
               <Col md={3} sm={12} key={item.id}>
                 <ProductCard item={item} />
               </Col>
